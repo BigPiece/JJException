@@ -74,7 +74,8 @@ JJSYNTH_DUMMY_CLASS(NSObject_UnrecognizedSelectorHook)
  */
 - (void)forwardInvocationSwizzled:(NSInvocation*)invocation{
     NSString* message = [NSString stringWithFormat:@"Unrecognized instance class:%@ and selector:%@",NSStringFromClass(self.class),NSStringFromSelector(invocation.selector)];
-    handleCrashException(JJExceptionGuardUnrecognizedSelector,message);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardUnrecognizedSelector,message,@{@"callStack":stack});
 }
 
 /**
@@ -84,7 +85,8 @@ JJSYNTH_DUMMY_CLASS(NSObject_UnrecognizedSelectorHook)
  */
 + (void)forwardClassInvocationSwizzled:(NSInvocation*)invocation{
     NSString* message = [NSString stringWithFormat:@"Unrecognized static class:%@ and selector:%@",NSStringFromClass(self.class),NSStringFromSelector(invocation.selector)];
-    handleCrashException(JJExceptionGuardUnrecognizedSelector,message);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardUnrecognizedSelector,message,@{@"callStack":stack});
 }
 
 

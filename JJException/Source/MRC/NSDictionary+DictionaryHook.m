@@ -25,7 +25,8 @@ JJSYNTH_DUMMY_CLASS(NSDictionary_DictionaryHook)
     if (object && key) {
         return [self hookDictionaryWithObject:object forKey:key];
     }
-    handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSDictionary dictionaryWithObject invalid object:%@ and key:%@",object,key]);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSDictionary dictionaryWithObject invalid object:%@ and key:%@",object,key],@{@"callStack":stack});
     return nil;
 }
 + (instancetype) hookDictionaryWithObjects:(const id [])objects forKeys:(const id [])keys count:(NSUInteger)cnt
@@ -39,7 +40,8 @@ JJSYNTH_DUMMY_CLASS(NSDictionary_DictionaryHook)
             objs[index] = objects[i];
             ++index;
         }else{
-            handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSDictionary dictionaryWithObjects invalid keys:%@ and object:%@",keys[i],objects[i]]);
+            NSArray *stack = [NSThread callStackSymbols];
+            handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSDictionary dictionaryWithObjects invalid keys:%@ and object:%@",keys[i],objects[i]],@{@"callStack":stack});
         }
     }
     return [self hookDictionaryWithObjects:objs forKeys:ks count:index];

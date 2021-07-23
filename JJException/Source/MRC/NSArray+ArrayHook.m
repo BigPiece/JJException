@@ -55,7 +55,8 @@ JJSYNTH_DUMMY_CLASS(NSArray_ArrayHook)
     if (anObject) {
         return [self hookArrayWithObject:anObject];
     }
-    handleCrashException(JJExceptionGuardArrayContainer,@"NSArray arrayWithObject object is nil");
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardArrayContainer,@"NSArray arrayWithObject object is nil",@{@"callStack":stack});
     return nil;
 }
 
@@ -63,14 +64,16 @@ JJSYNTH_DUMMY_CLASS(NSArray_ArrayHook)
     if (index < self.count) {
         return [self hookObjectAtIndex:index];
     }
-    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray objectAtIndex invalid index:%tu total:%tu",index,self.count]);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray objectAtIndex invalid index:%tu total:%tu",index,self.count],@{@"callStack":stack});
     return nil;
 }
 - (id) hookObjectAtIndexedSubscript:(NSInteger)index {
     if (index < self.count) {
         return [self hookObjectAtIndexedSubscript:index];
     }
-    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray objectAtIndexedSubscript invalid index:%tu total:%tu",index,self.count]);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray objectAtIndexedSubscript invalid index:%tu total:%tu",index,self.count],@{@"callStack":stack});
     return nil;
 }
 - (NSArray *)hookSubarrayWithRange:(NSRange)range
@@ -80,7 +83,8 @@ JJSYNTH_DUMMY_CLASS(NSArray_ArrayHook)
     }else if (range.location < self.count){
         return [self hookSubarrayWithRange:NSMakeRange(range.location, self.count-range.location)];
     }
-    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray subarrayWithRange invalid range location:%tu length:%tu",range.location,range.length]);
+    NSArray *stack = [NSThread callStackSymbols];
+    handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray subarrayWithRange invalid range location:%tu length:%tu",range.location,range.length],@{@"callStack":stack});
     return nil;
 }
 + (instancetype)hookArrayWithObjects:(const id [])objects count:(NSUInteger)cnt
@@ -91,7 +95,8 @@ JJSYNTH_DUMMY_CLASS(NSArray_ArrayHook)
         if (objects[i]) {
             objs[index++] = objects[i];
         }else{
-            handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray arrayWithObjects invalid index object:%tu total:%tu",i,cnt]);
+            NSArray *stack = [NSThread callStackSymbols];
+            handleCrashException(JJExceptionGuardArrayContainer,[NSString stringWithFormat:@"NSArray arrayWithObjects invalid index object:%tu total:%tu",i,cnt],@{@"callStack":stack});
         }
     }
     return [self hookArrayWithObjects:objs count:index];

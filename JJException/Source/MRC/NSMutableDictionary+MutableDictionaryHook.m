@@ -25,7 +25,8 @@ JJSYNTH_DUMMY_CLASS(NSMutableDictionary_MutableDictionaryHook)
     if (object && key) {
         [self hookSetObject:object forKey:key];
     } else {
-        handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSMutableDictionary setObject invalid object:%@ and key:%@",object,key],self);
+        NSArray *stack = [NSThread callStackSymbols];
+        handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSMutableDictionary setObject invalid object:%@ and key:%@",object,key],self,@{@"callStack":stack});
     }
 }
 
@@ -33,7 +34,8 @@ JJSYNTH_DUMMY_CLASS(NSMutableDictionary_MutableDictionaryHook)
     if (key) {
         [self hookRemoveObjectForKey:key];
     } else {
-        handleCrashException(JJExceptionGuardDictionaryContainer,@"NSMutableDictionary removeObjectForKey nil key",self);
+        NSArray *stack = [NSThread callStackSymbols];
+        handleCrashException(JJExceptionGuardDictionaryContainer,@"NSMutableDictionary removeObjectForKey nil key",self,@{@"callStack":stack});
     }
 }
 
@@ -41,7 +43,8 @@ JJSYNTH_DUMMY_CLASS(NSMutableDictionary_MutableDictionaryHook)
     if (key) {
         [self hookSetObject:object forKeyedSubscript:key];
     } else {
-        handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSMutableDictionary setObject object:%@ and forKeyedSubscript:%@",object,key],self);
+        NSArray *stack = [NSThread callStackSymbols];
+        handleCrashException(JJExceptionGuardDictionaryContainer,[NSString stringWithFormat:@"NSMutableDictionary setObject object:%@ and forKeyedSubscript:%@",object,key],self,@{@"callStack":stack});
     }
 }
 
